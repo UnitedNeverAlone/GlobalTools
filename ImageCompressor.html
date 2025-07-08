@@ -289,37 +289,6 @@
             color: var(--medium-gray);
         }
         
-        .ad-container {
-            margin: 30px 0;
-            text-align: center;
-            min-height: 90px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--light-gray);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .ad-label {
-            font-size: 12px;
-            color: var(--medium-gray);
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        
-        .post-compression-ad {
-            display: none;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .download-section {
-            display: none;
-            margin-top: 20px;
-            text-align: center;
-        }
-        
         footer {
             background-color: var(--dark-gray);
             color: white;
@@ -378,8 +347,6 @@
             border-color: var(--secondary-color);
         }
     </style>
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -389,23 +356,6 @@
     </header>
     
     <div class="container">
-        <!-- Top Ad Banner -->
-        <div class="ad-container">
-            <div>
-                <div class="ad-label">Advertisement</div>
-                <!-- Replace with your AdSense ad unit code -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
-                     data-ad-slot="YOUR_AD_SLOT_ID"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-        </div>
-        
         <div class="main-content">
             <h1>Free Online Image Compressor</h1>
             <p class="description">Compress JPG, PNG, GIF, WEBP and other image formats while maintaining quality. Reduce file size for faster websites and easier sharing.</p>
@@ -476,42 +426,9 @@
                 
                 <div class="image-grid" id="imageGrid"></div>
                 
-                <!-- Post-compression ad section -->
-                <div class="post-compression-ad" id="postCompressionAd">
-                    <div class="ad-label">Advertisement</div>
-                    <p>Please view the ad below to unlock your downloads</p>
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-YOUR_ADSENSE_ID"
-                         data-ad-slot="YOUR_POST_COMPRESSION_AD_SLOT_ID"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-                
-                <!-- Download section (hidden until ad is clicked) -->
-                <div class="download-section" id="downloadSection">
+                <div style="text-align: center; margin-top: 20px;">
                     <button class="btn" id="downloadAllBtn">Download All Images</button>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Middle Ad Banner -->
-        <div class="ad-container">
-            <div>
-                <div class="ad-label">Advertisement</div>
-                <!-- Replace with your AdSense ad unit code -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-YOUR_ADSENSE_ID"
-                     data-ad-slot="YOUR_AD_SLOT_ID"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
             </div>
         </div>
     </div>
@@ -542,14 +459,11 @@
         const totalOriginalSize = document.getElementById('totalOriginalSize');
         const totalCompressedSize = document.getElementById('totalCompressedSize');
         const totalSavings = document.getElementById('totalSavings');
-        const postCompressionAd = document.getElementById('postCompressionAd');
-        const downloadSection = document.getElementById('downloadSection');
         const downloadAllBtn = document.getElementById('downloadAllBtn');
         
         // Global variables
         let selectedFiles = [];
         let compressedFiles = [];
-        let adClicked = false;
         
         // Initialize the tool
         function init() {
@@ -563,15 +477,6 @@
             compressBtn.addEventListener('click', compressImages);
             resetBtn.addEventListener('click', resetTool);
             downloadAllBtn.addEventListener('click', downloadAllImages);
-            
-            // Listen for ad clicks (this is a workaround since AdSense doesn't provide direct click tracking)
-            document.addEventListener('click', function(e) {
-                if (postCompressionAd.style.display === 'block' && 
-                    e.target.closest('.adsbygoogle')) {
-                    adClicked = true;
-                    unlockDownloads();
-                }
-            });
             
             // Initialize UI values
             updateCompressionValue();
@@ -636,7 +541,6 @@
             // Reset previous results
             imageGrid.innerHTML = '';
             compressedFiles = [];
-            adClicked = false;
             
             // Process each file
             let totalOriginal = 0;
@@ -662,6 +566,7 @@
                                 <span>${formatFileSize(result.originalSize)} → ${formatFileSize(result.compressedSize)}</span>
                                 <span>${calculateSavings(result.originalSize, result.compressedSize)}% saved</span>
                             </div>
+                            <a href="${result.compressedUrl}" download="${getOutputFileName(result.name, outputFormat.value)}" class="download-btn">Download</a>
                         </div>
                     `;
                     imageGrid.appendChild(imageCard);
@@ -679,28 +584,8 @@
             resultsSection.style.display = 'block';
             compressBtn.disabled = false;
             
-            // Show the post-compression ad
-            postCompressionAd.style.display = 'block';
-            downloadSection.style.display = 'none';
-            
             // Scroll to results
             resultsSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function unlockDownloads() {
-            postCompressionAd.style.display = 'none';
-            downloadSection.style.display = 'block';
-            
-            // Add download buttons to each image card
-            const imageCards = document.querySelectorAll('.image-card');
-            imageCards.forEach((card, index) => {
-                const downloadBtn = document.createElement('a');
-                downloadBtn.href = compressedFiles[index].compressedUrl;
-                downloadBtn.download = getOutputFileName(compressedFiles[index].name, outputFormat.value);
-                downloadBtn.className = 'download-btn';
-                downloadBtn.textContent = 'Download';
-                card.querySelector('.image-info').appendChild(downloadBtn);
-            });
         }
         
         function compressImage(file) {
@@ -775,11 +660,8 @@
             compressBtn.disabled = true;
             resultsSection.style.display = 'none';
             imageGrid.innerHTML = '';
-            postCompressionAd.style.display = 'none';
-            downloadSection.style.display = 'none';
             dropArea.classList.remove('file-selected');
             dropArea.style.backgroundColor = 'rgba(66, 133, 244, 0.05)';
-            adClicked = false;
         }
         
         function downloadAllImages() {
