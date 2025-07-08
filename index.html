@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolHub - Your Online Tools Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --warning-color: #ffcc00;
+            --danger-color: #f44336;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-bar button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Tools Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .tool-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-card-header {
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .tool-card-header i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+
+        .tool-card-body {
+            padding: 20px;
+        }
+
+        .tool-card-body h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .tool-card-body p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Tool Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .category-btn {
+            padding: 8px 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* New Tools Section */
+        .new-tools {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+
+        .new-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .new-tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            background-color: var(--light-color);
+            transition: var(--transition);
+        }
+
+        .new-tool-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .new-tool-item i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 40px 0;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+
+            .tool-card {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-tools"></i>
+                    <span>ToolHub</span>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#tools">All Tools</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="#new-tools">New Tools</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Gateway to Powerful Online Tools</h1>
+            <p>Access all your favorite tools in one place. No installations, no hassle - just click and use!</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for tools..." id="toolSearch">
+                <button type="submit"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Popular Tools Section -->
+        <section id="tools">
+            <div class="section-title">
+                <h2>Popular Tools</h2>
+            </div>
+            <div class="tools-grid" id="popularToolsGrid">
+                <!-- Tools will be added dynamically via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Tool Categories Section -->
+        <section id="categories">
+            <div class="section-title">
+                <h2>Tool Categories</h2>
+            </div>
+            <div class="categories" id="toolCategories">
+                <!-- Categories will be added dynamically via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Recently Added Tools -->
+        <section id="new-tools">
+            <div class="section-title">
+                <h2>Recently Added</h2>
+            </div>
+            <div class="new-tools">
+                <div class="new-tools-grid" id="newToolsGrid">
+                    <!-- New tools will be added dynamically via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ToolHub</h3>
+                    <p>Your central hub for all online tools. Quick access to your favorite utilities.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#tools">All Tools</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#new-tools">New Tools</a></li>
+                        <li><a href="#">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Popular Categories</h3>
+                    <ul id="footerCategories">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ToolHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tool Data - This can be moved to a separate JSON file in production
+        const toolsData = {
+            categories: [
+                { id: 'all', name: 'All' },
+                { id: 'image', name: 'Image Tools' },
+                { id: 'pdf', name: 'PDF Tools' },
+                { id: 'video', name: 'Video Tools' },
+                { id: 'audio', name: 'Audio Tools' },
+                { id: 'developer', name: 'Developer Tools' },
+                { id: 'office', name: 'Office Tools' },
+                { id: 'web', name: 'Web Tools' }
+            ],
+            tools: [
+                {
+                    id: 'image-compressor',
+                    name: 'Image Compressor',
+                    description: 'Reduce image file size while maintaining quality. Supports JPG, PNG, WebP.',
+                    icon: 'file-image',
+                    category: 'image',
+                    url: 'https://unitedneveralone.github.io/GlobalTools/ImageCompressor',
+                    isPopular: true,
+                    isNew: false
+                },
+                {
+                    id: 'pdf-converter',
+                    name: 'PDF Converter',
+                    description: 'Convert PDFs to Word, Excel, images and vice versa with OCR support.',
+                    icon: 'file-pdf',
+                    category: 'pdf',
+                    url: 'https://yourwebsite.com/pdf-converter',
+                    isPopular: true,
+                    isNew: false
+                },
+                {
+                    id: 'audio-extractor',
+                    name: 'Audio Extractor',
+                    description: 'Extract audio from video files in MP3, WAV, AAC and other formats.',
+                    icon: 'music',
+                    category: 'audio',
+                    url: 'https://yourwebsite.com/audio-extractor',
+                    isPopular: true,
+                    isNew: false
+                },
+                {
+                    id: 'video-compressor',
+                    name: 'Video Compressor',
+                    description: 'Compress video files without quality loss. Supports MP4, MOV, AVI.',
+                    icon: 'video',
+                    category: 'video',
+                    url: 'https://yourwebsite.com/video-compressor',
+                    isPopular: true,
+                    isNew: false
+                },
+                {
+                    id: 'qr-generator',
+                    name: 'QR Generator',
+                    description: 'Create custom QR codes for URLs, text, contacts, WiFi and more.',
+                    icon: 'qrcode',
+                    category: 'web',
+                    url: 'https://yourwebsite.com/qr-generator',
+                    isPopular: false,
+                    isNew: true
+                },
+                {
+                    id: 'password-generator',
+                    name: 'Password Generator',
+                    description: 'Generate strong, secure passwords with customizable options.',
+                    icon: 'key',
+                    category: 'developer',
+                    url: 'https://yourwebsite.com/password-generator',
+                    isPopular: false,
+                    isNew: true
+                },
+                {
+                    id: 'word-counter',
+                    name: 'Word Counter',
+                    description: 'Count words, characters, sentences and paragraphs in your text.',
+                    icon: 'file-word',
+                    category: 'office',
+                    url: 'https://yourwebsite.com/word-counter',
+                    isPopular: false,
+                    isNew: true
+                },
+                {
+                    id: 'color-picker',
+                    name: 'Color Picker',
+                    description: 'Pick colors from images and get HEX, RGB, HSL values.',
+                    icon: 'eye-dropper',
+                    category: 'web',
+                    url: 'https://yourwebsite.com/color-picker',
+                    isPopular: false,
+                    isNew: true
+                }
+            ]
+        };
+
+        // DOM Elements
+        const popularToolsGrid = document.getElementById('popularToolsGrid');
+        const newToolsGrid = document.getElementById('newToolsGrid');
+        const toolCategories = document.getElementById('toolCategories');
+        const footerCategories = document.getElementById('footerCategories');
+        const toolSearch = document.getElementById('toolSearch');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderPopularTools();
+            renderNewTools();
+            renderFooterCategories();
+        });
+
+        // Render Categories
+        function renderCategories() {
+            toolCategories.innerHTML = '';
+            toolsData.categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'category-btn';
+                if (category.id === 'all') button.classList.add('active');
+                button.textContent = category.name;
+                button.setAttribute('data-category', category.id);
+                button.addEventListener('click', filterToolsByCategory);
+                toolCategories.appendChild(button);
+            });
+        }
+
+        // Render Popular Tools
+        function renderPopularTools() {
+            popularToolsGrid.innerHTML = '';
+            const popularTools = toolsData.tools.filter(tool => tool.isPopular);
+            
+            popularTools.forEach(tool => {
+                const toolCard = createToolCard(tool);
+                popularToolsGrid.appendChild(toolCard);
+            });
+        }
+
+        // Render New Tools
+        function renderNewTools() {
+            newToolsGrid.innerHTML = '';
+            const newTools = toolsData.tools.filter(tool => tool.isNew);
+            
+            newTools.forEach(tool => {
+                const toolItem = document.createElement('a');
+                toolItem.className = 'new-tool-item';
+                toolItem.href = tool.url;
+                toolItem.target = '_blank';
+                toolItem.innerHTML = `
+                    <i class="fas fa-${tool.icon}"></i>
+                    <span>${tool.name}</span>
+                `;
+                newToolsGrid.appendChild(toolItem);
+            });
+        }
+
+        // Render Footer Categories
+        function renderFooterCategories() {
+            footerCategories.innerHTML = '';
+            // Show only first 5 categories in footer
+            const categoriesToShow = toolsData.categories.slice(0, 5);
+            
+            categoriesToShow.forEach(category => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${category.id}`;
+                a.textContent = category.name;
+                li.appendChild(a);
+                footerCategories.appendChild(li);
+            });
+        }
+
+        // Create Tool Card Element
+        function createToolCard(tool) {
+            const card = document.createElement('div');
+            card.className = 'tool-card';
+            card.setAttribute('data-category', tool.category);
+            card.setAttribute('data-id', tool.id);
+            
+            card.innerHTML = `
+                <div class="tool-card-header">
+                    <i class="fas fa-${tool.icon}"></i>
+                    <h3>${tool.name}</h3>
+                </div>
+                <div class="tool-card-body">
+                    <p>${tool.description}</p>
+                    <a href="${tool.url}" target="_blank" class="btn btn-outline">Use Tool</a>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Filter Tools by Category
+        function filterToolsByCategory(e) {
+            const category = e.target.getAttribute('data-category');
+            
+            // Update active category button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Filter tools
+            popularToolsGrid.innerHTML = '';
+            let toolsToShow = [];
+            
+            if (category === 'all') {
+                toolsToShow = toolsData.tools.filter(tool => tool.isPopular);
+            } else {
+                toolsToShow = toolsData.tools.filter(tool => 
+                    tool.category === category && tool.isPopular
+                );
+            }
+            
+            if (toolsToShow.length === 0) {
+                popularToolsGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <h3>No tools found in this category</h3>
+                        <p>We're constantly adding new tools. Check back soon!</p>
+                    </div>
+                `;
+            } else {
+                toolsToShow.forEach(tool => {
+                    const toolCard = createToolCard(tool);
+                    popularToolsGrid.appendChild(toolCard);
+                });
+            }
+        }
+
+        // Search Tools
+        toolSearch.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm.length > 0) {
+                const filteredTools = toolsData.tools.filter(tool => 
+                    tool.name.toLowerCase().includes(searchTerm) || 
+                    tool.description.toLowerCase().includes(searchTerm)
+                );
+                
+                popularToolsGrid.innerHTML = '';
+                
+                if (filteredTools.length === 0) {
+                    popularToolsGrid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                            <h3>No tools found matching "${searchTerm}"</h3>
+                            <p>Try a different search term</p>
+                        </div>
+                    `;
+                } else {
+                    filteredTools.forEach(tool => {
+                        const toolCard = createToolCard(tool);
+                        popularToolsGrid.appendChild(toolCard);
+                    });
+                }
+            } else {
+                renderPopularTools();
+            }
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+    </script>
+</body>
+</html>
