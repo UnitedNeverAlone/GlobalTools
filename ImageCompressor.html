@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free online tool to compress images while maintaining quality. Supports JPG, PNG, WEBP, GIF and more. Reduce image file size easily.">
-    <meta name="keywords" content="image compressor, compress images, reduce image size, online image optimizer, photo compressor,compress image online,image optimizer,online image compression tool,compress photo online,jpeg compressor,png compressor,webp compressor,free image compressor,compress JPG file,compress PNG file,compress WebP image,compress BMP online,compress GIF file,compress TIFF image,convert and compress SVG,compress HEIC images,compress RAW image,compress image to WebP,compress image for Android,image compressor for iPhone,compress image for website,compress image for email,compress images for blog,compress image for WordPress,compress image for Shopify,image compressor for Windows,image compressor for Mac,compress images for social media,reduce image size under 100KB,compress image to 200KB,compress image to 50KB,compress image to 20KB,compress image without losing quality,compress high resolution image,compress image without quality loss,compress large image,shrink image file,low size image converter,free image compressor online,best image compressor tool,no watermark image compressor,bulk image compressor,drag and drop image compressor,compress multiple images online,fast image compression,image compression with quality slider,lightweight image compressor,responsive image optimizer,compress image for uploading,compress image before sending,compress image to download faster,compress image for Discord,compress image for LinkedIn,compress image for Instagram,compress image for Facebook,compress image for Pinterest,compress image for WhatsApp,compress image for email attachment,online image compression India,free photo compressor USA,image compressor UK,reduce image size EU,image compressor tool Canada,image compression software Australia,compress image German website,online image optimizer France,image reducer tool Japan,photo compression app Dubai,compress and resize image,compress and convert image,compress and crop image,image compression and optimization,image compressor with preview,AI image compression tool,SEO image optimizer,reduce website image size,web image compressor,compress transparent images,developer image compression,compress image for faster load time,optimize image for Google PageSpeed,compress image using browser,compress image with canvas,lossless image compressor,lossy image compression,base64 image compressor,reduce bandwidth with image compression,compress image for web development,TinyPNG alternative,Squoosh image compressor,Compressor.io alternative,Kraken.io vs our tool,JPEGmini online free,Web-based image compression,Compress image like Photoshop,open source image compressor,browser-based photo optimizer,compress photos like a pro">
+    <meta name="keywords" content="image compressor,compress image online,reduce image size,image optimizer,online image compression tool,compress photo online,jpeg compressor,png compressor,webp compressor,free image compressor,compress JPG file,compress PNG file,compress WebP image,compress BMP online,compress GIF file,compress TIFF image,convert and compress SVG,compress HEIC images,compress RAW image,compress image to WebP,compress image for Android,image compressor for iPhone,compress image for website,compress image for email,compress images for blog,compress image for WordPress,compress image for Shopify,image compressor for Windows,image compressor for Mac,compress images for social media,reduce image size under 100KB,compress image to 200KB,compress image to 50KB,compress image to 20KB,compress image without losing quality,compress high resolution image,compress image without quality loss,compress large image,shrink image file,low size image converter,free image compressor online,best image compressor tool,no watermark image compressor,bulk image compressor,drag and drop image compressor,compress multiple images online,fast image compression,image compression with quality slider,lightweight image compressor,responsive image optimizer,compress image for uploading,compress image before sending,compress image to download faster,compress image for Discord,compress image for LinkedIn,compress image for Instagram,compress image for Facebook,compress image for Pinterest,compress image for WhatsApp,compress image for email attachment,online image compression India,free photo compressor USA,image compressor UK,reduce image size EU,image compressor tool Canada,image compression software Australia,compress image German website,online image optimizer France,image reducer tool Japan,photo compression app Dubai,compress and resize image,compress and convert image,compress and crop image,image compression and optimization,image compressor with preview,AI image compression tool,SEO image optimizer,reduce website image size,web image compressor,compress transparent images,developer image compression,compress image for faster load time,optimize image for Google PageSpeed,compress image using browser,compress image with canvas,lossless image compressor,lossy image compression,base64 image compressor,reduce bandwidth with image compression,compress image for web development,TinyPNG alternative,Squoosh image compressor,Compressor.io alternative,Kraken.io vs our tool,JPEGmini online free,Web-based image compression,Compress image like Photoshop,open source image compressor,browser-based photo optimizer,compress photos like a pro">
     <title>Free Online Image Compression Tool | Compress JPG, PNG, WEBP</title>
     <style>
         :root {
@@ -308,6 +308,18 @@
             margin-bottom: 5px;
         }
         
+        .post-compression-ad {
+            display: none;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .download-section {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
         footer {
             background-color: var(--dark-gray);
             color: white;
@@ -464,7 +476,23 @@
                 
                 <div class="image-grid" id="imageGrid"></div>
                 
-                <div style="text-align: center;">
+                <!-- Post-compression ad section -->
+                <div class="post-compression-ad" id="postCompressionAd">
+                    <div class="ad-label">Advertisement</div>
+                    <p>Please view the ad below to unlock your downloads</p>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                         data-ad-slot="YOUR_POST_COMPRESSION_AD_SLOT_ID"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                
+                <!-- Download section (hidden until ad is clicked) -->
+                <div class="download-section" id="downloadSection">
                     <button class="btn" id="downloadAllBtn">Download All Images</button>
                 </div>
             </div>
@@ -514,11 +542,14 @@
         const totalOriginalSize = document.getElementById('totalOriginalSize');
         const totalCompressedSize = document.getElementById('totalCompressedSize');
         const totalSavings = document.getElementById('totalSavings');
+        const postCompressionAd = document.getElementById('postCompressionAd');
+        const downloadSection = document.getElementById('downloadSection');
         const downloadAllBtn = document.getElementById('downloadAllBtn');
         
         // Global variables
         let selectedFiles = [];
         let compressedFiles = [];
+        let adClicked = false;
         
         // Initialize the tool
         function init() {
@@ -532,6 +563,15 @@
             compressBtn.addEventListener('click', compressImages);
             resetBtn.addEventListener('click', resetTool);
             downloadAllBtn.addEventListener('click', downloadAllImages);
+            
+            // Listen for ad clicks (this is a workaround since AdSense doesn't provide direct click tracking)
+            document.addEventListener('click', function(e) {
+                if (postCompressionAd.style.display === 'block' && 
+                    e.target.closest('.adsbygoogle')) {
+                    adClicked = true;
+                    unlockDownloads();
+                }
+            });
             
             // Initialize UI values
             updateCompressionValue();
@@ -596,6 +636,7 @@
             // Reset previous results
             imageGrid.innerHTML = '';
             compressedFiles = [];
+            adClicked = false;
             
             // Process each file
             let totalOriginal = 0;
@@ -621,7 +662,6 @@
                                 <span>${formatFileSize(result.originalSize)} → ${formatFileSize(result.compressedSize)}</span>
                                 <span>${calculateSavings(result.originalSize, result.compressedSize)}% saved</span>
                             </div>
-                            <a href="${result.compressedUrl}" download="${getOutputFileName(result.name, outputFormat.value)}" class="download-btn">Download</a>
                         </div>
                     `;
                     imageGrid.appendChild(imageCard);
@@ -639,8 +679,28 @@
             resultsSection.style.display = 'block';
             compressBtn.disabled = false;
             
+            // Show the post-compression ad
+            postCompressionAd.style.display = 'block';
+            downloadSection.style.display = 'none';
+            
             // Scroll to results
             resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function unlockDownloads() {
+            postCompressionAd.style.display = 'none';
+            downloadSection.style.display = 'block';
+            
+            // Add download buttons to each image card
+            const imageCards = document.querySelectorAll('.image-card');
+            imageCards.forEach((card, index) => {
+                const downloadBtn = document.createElement('a');
+                downloadBtn.href = compressedFiles[index].compressedUrl;
+                downloadBtn.download = getOutputFileName(compressedFiles[index].name, outputFormat.value);
+                downloadBtn.className = 'download-btn';
+                downloadBtn.textContent = 'Download';
+                card.querySelector('.image-info').appendChild(downloadBtn);
+            });
         }
         
         function compressImage(file) {
@@ -715,8 +775,11 @@
             compressBtn.disabled = true;
             resultsSection.style.display = 'none';
             imageGrid.innerHTML = '';
+            postCompressionAd.style.display = 'none';
+            downloadSection.style.display = 'none';
             dropArea.classList.remove('file-selected');
             dropArea.style.backgroundColor = 'rgba(66, 133, 244, 0.05)';
+            adClicked = false;
         }
         
         function downloadAllImages() {
